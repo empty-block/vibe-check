@@ -10,7 +10,7 @@ Vibe Check is a simple Farcaster Mini App that creates a daily social vibe barom
 
 - 🤖 **Daily Automated Prompts** - Bot posts daily vibe check questions
 - 📱 **Mini-App Integration** - Seamless posting through Farcaster Mini App
-- 😊 **Emoji-First Design** - Encourages quick emoji responses with full flexibility
+- 🔥 **Emoji-First Design** - Encourages quick emoji responses with full flexibility
 - 🧵 **Thread-Based Storage** - Uses Farcaster's social infrastructure as the database
 - ⚡ **Real-Time Updates** - Live community vibe stats and responses
 
