@@ -23,17 +23,73 @@ Vibe Check is a simple Farcaster Mini App that creates a daily social vibe barom
 - **Deployment**: Cloudflare Workers + orbiter.host
 - **Styling**: Tailwind CSS
 
-## Documentation
-
-📋 **[Complete Specifications](./Specs.md)** - Detailed technical specifications, user flows, and implementation notes.
-
-## Repository Status
-
-🚧 **In Development** - This repository contains the project specifications. Implementation coming soon.
-
 ## Getting Started
 
-This repository is currently in the planning phase. Check the [Specs.md](./Specs.md) file for complete technical details and implementation plans.
+### Prerequisites
+
+- [Bun](https://bun.sh) installed
+- Neynar API key
+- Farcaster bot account credentials
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/emptyblock/vibe-check.git
+cd vibe-check
+```
+
+2. Install dependencies:
+```bash
+bun install
+```
+
+3. Copy environment variables:
+```bash
+cp .env.example .env
+```
+
+4. Configure your `.env` file with:
+   - `NEYNAR_API_KEY` - Your Neynar API key
+   - `BOT_FID` - Your bot's Farcaster ID
+   - `BOT_SIGNER_UUID` - Your bot's signer UUID
+
+### Development
+
+Run both the client and server in development mode:
+
+```bash
+bun run dev
+```
+
+This will start:
+- Vite dev server on http://localhost:5173
+- Hono API server on http://localhost:3000
+
+### Building for Production
+
+```bash
+bun run build
+```
+
+This creates:
+- Client build in `dist/client/`
+- Server build in `dist/server/`
+
+## API Endpoints
+
+- `GET /api/health` - Health check
+- `GET /api/auth/me` - Get authenticated user
+- `POST /api/auth/verify` - Verify auth token
+- `GET /api/today` - Get today's vibe thread
+- `POST /api/vibe` - Post a vibe response
+- `GET /api/stats/today` - Get community stats
+- `POST /api/bot/daily-prompt` - Trigger daily prompt
+- `GET /api/bot/status` - Check bot status
+
+## Documentation
+
+📋 **[Complete Specifications](./specs.md)** - Detailed technical specifications, user flows, and implementation notes.
 
 ---
 
