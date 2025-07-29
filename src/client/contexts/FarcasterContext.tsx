@@ -13,6 +13,8 @@ interface FarcasterContextValue {
   user: FarcasterUser | null
   loading: boolean
   error: Error | null
+  authenticate: () => Promise<void>
+  getAuthToken: () => Promise<string | null>
 }
 
 const FarcasterContext = createContext<FarcasterContextValue>({
@@ -20,6 +22,8 @@ const FarcasterContext = createContext<FarcasterContextValue>({
   user: null,
   loading: true,
   error: null,
+  authenticate: async () => {},
+  getAuthToken: async () => null,
 })
 
 export const useFarcaster = () => {
@@ -39,6 +43,46 @@ export function FarcasterProvider({ children }: FarcasterProviderProps) {
   const [user, setUser] = useState<FarcasterUser | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
+  const [authToken, setAuthToken] = useState<string | null>(null)
+
+  const authenticate = async () => {
+    try {
+      if (!client) {
+        throw new Error('Farcaster client not initialized')
+      }
+      
+      // Get auth token using Quick Auth
+      const { token } = await client.quickAuth.getToken()
+      setAuthToken(token)
+      
+      // Fetch user profile from our backend
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3002'
+      const res = await client.quickAuth.fetch(`${apiUrl}/api/auth/me`)
+      if (res.ok) {
+        const data = await res.json()
+        setUser(data.user)
+      } else {
+        throw new Error('Failed to fetch user profile')
+      }
+    } catch (err) {
+      console.error('Authentication failed:', err)
+      setError(err as Error)
+    }
+  }
+
+  const getAuthToken = async () => {
+    try {
+      if (!client) return null
+      
+      // Get a fresh token if needed
+      const { token } = await client.quickAuth.getToken()
+      setAuthToken(token)
+      return token
+    } catch (err) {
+      console.error('Failed to get auth token:', err)
+      return null
+    }
+  }
 
   useEffect(() => {
     const initClient = async () => {
@@ -60,6 +104,8 @@ export function FarcasterProvider({ children }: FarcasterProviderProps) {
               displayName: context.user.displayName || '',
               pfpUrl: context.user.pfpUrl || '',
             })
+            
+            // Don't authenticate here, will be called after init
           }
           
           // CRITICAL: Tell Farcaster the app is ready
@@ -84,7 +130,7 @@ export function FarcasterProvider({ children }: FarcasterProviderProps) {
   }, [])
 
   return (
-    <FarcasterContext.Provider value={{ client, user, loading, error }}>
+    <FarcasterContext.Provider value={{ client, user, loading, error, authenticate, getAuthToken }}>
       {children}
     </FarcasterContext.Provider>
   )

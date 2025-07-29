@@ -14,7 +14,10 @@ validateConfig()
 
 // Middleware
 app.use('*', logger())
-app.use('/api/*', cors())
+app.use('*', cors({
+  origin: '*',
+  credentials: true
+}))
 
 // Health check
 app.get('/api/health', (c) => {

@@ -35,10 +35,11 @@ function AppContent() {
       <main className="p-4">
         <div className="bg-white rounded-lg shadow-sm p-6 mt-4">
           <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2">
-            What's the vibe?
+            What's the vibe today?
           </h2>
           <p className="text-center text-gray-600 text-sm">
-            Share your vibe with the world
+            {/* How are you feeling today?  */}
+            Respond with emoji(s) and/or a word or two
           </p>
           
           <div className="mt-8 text-center">
