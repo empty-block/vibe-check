@@ -94,4 +94,12 @@ worker-configuration.d.ts
 
 # Temporary files
 tmp/
-temp/ 
+temp/
+
+# Tunnel logs
+cloudflare.log
+dev.log
+
+# Tunnel binaries
+ngrok
+*.zip 

@@ -2,6 +2,7 @@ import { FarcasterProvider, useFarcaster } from './contexts/FarcasterContext'
 import { Layout } from './components/Layout'
 import { Header } from './components/Header'
 import { Loading } from './components/Loading'
+import VibePage from './components/VibePage'
 
 function AppContent() {
   const { user, loading, error } = useFarcaster()
@@ -33,21 +34,7 @@ function AppContent() {
     <Layout>
       <Header />
       <main className="p-4">
-        <div className="bg-white rounded-lg shadow-sm p-6 mt-4">
-          <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2">
-            What's the vibe today?
-          </h2>
-          <p className="text-center text-gray-600 text-sm">
-            {/* How are you feeling today?  */}
-            Respond with emoji(s) and/or a word or two
-          </p>
-          
-          <div className="mt-8 text-center">
-            <button className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg hover:bg-purple-700 transition-colors">
-              Submit
-            </button>
-          </div>
-        </div>
+        <VibePage />
       </main>
     </Layout>
   )
