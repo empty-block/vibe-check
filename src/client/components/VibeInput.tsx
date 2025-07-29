@@ -1,69 +1,86 @@
 import React, { useState, useRef } from 'react';
+import EmojiPicker, { type EmojiClickData } from 'emoji-picker-react';
 
 interface VibeInputProps {
   onSubmit: (vibe: { emojis: string; text?: string }) => void;
 }
 
 const VibeInput: React.FC<VibeInputProps> = ({ onSubmit }) => {
-  const [emojis, setEmojis] = useState('');
-  const [text, setText] = useState('');
-  const [showTextInput, setShowTextInput] = useState(false);
-  const emojiInputRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleEmojiInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmojis(e.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
   };
 
-  const handleTextInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+  const handleEmojiPicker = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const handleEmojiClick = (emojiData: EmojiClickData) => {
+    setInput(prev => prev + emojiData.emoji);
+    setShowEmojiPicker(false);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (emojis.trim() || text.trim()) {
-      onSubmit({ emojis: emojis.trim(), text: text.trim() || undefined });
-      setEmojis('');
-      setText('');
-      setShowTextInput(false);
+    if (input.trim()) {
+      // Parse emojis vs text (simple approach - emojis are typically unicode characters > 127)
+      const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu;
+      const emojis = input.match(emojiRegex)?.join('') || '';
+      const text = input.replace(emojiRegex, '').trim();
+      
+      onSubmit({ 
+        emojis: emojis || input.trim(), // fallback to full input if no emojis detected
+        text: text || undefined 
+      });
+      setInput('');
     }
   };
 
   return (
     <form className="vibe-input" onSubmit={handleSubmit}>
-      <div className="emoji-input-container">
+      <div className="input-container">
         <input
-          ref={emojiInputRef}
+          ref={inputRef}
           type="text"
-          className="emoji-input"
-          placeholder="Tap to add emojis 🔥"
-          value={emojis}
-          onChange={handleEmojiInput}
+          className="vibe-text-input"
+          placeholder="Share your vibe with emojis and words... 🔥"
+          value={input}
+          onChange={handleInputChange}
           autoComplete="off"
         />
         <button
           type="button"
-          className="text-toggle"
-          onClick={() => setShowTextInput(!showTextInput)}
-          aria-label={showTextInput ? "Hide text input" : "Add text"}
+          className="emoji-picker-button"
+          onClick={handleEmojiPicker}
+          aria-label="Open emoji picker"
         >
-          {showTextInput ? '−' : 'Aa'}
+          😊
         </button>
       </div>
       
-      {showTextInput && (
-        <textarea
-          className="text-input"
-          placeholder="Add some words to your vibe..."
-          value={text}
-          onChange={handleTextInput}
-          rows={3}
-        />
+      {showEmojiPicker && (
+        <div className="emoji-picker-container">
+          <EmojiPicker
+            onEmojiClick={handleEmojiClick}
+            width={300}
+            height={350}
+            searchDisabled={false}
+            skinTonesDisabled={true}
+            previewConfig={{ showPreview: false }}
+          />
+        </div>
       )}
       
       <button
         type="submit"
         className="submit-button"
-        disabled={!emojis.trim() && !text.trim()}
+        disabled={!input.trim()}
       >
         Share Vibe
       </button>

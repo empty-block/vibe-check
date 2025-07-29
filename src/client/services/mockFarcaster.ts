@@ -67,8 +67,8 @@ export const mockPostVibe = async (vibe: { emojis: string; text?: string }, user
     author: {
       fid: user.fid,
       username: user.username,
-      displayName: user.display_name,
-      pfp: user.pfp_url
+      displayName: user.displayName,
+      pfp: user.pfpUrl
     },
     content: vibe,
     timestamp: new Date()

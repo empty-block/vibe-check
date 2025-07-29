@@ -218,15 +218,15 @@ button {
   margin-bottom: 2rem;
 }
 
-.emoji-input-container {
+.input-container {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
-.emoji-input {
+.vibe-text-input {
   flex: 1;
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   padding: 0.75rem 1rem;
   border: 2px solid #e5e7eb;
   border-radius: 0.5rem;
@@ -234,38 +234,37 @@ button {
   transition: border-color 0.2s;
 }
 
-.emoji-input:focus {
+.vibe-text-input:focus {
   border-color: #9333ea;
 }
 
-.text-toggle {
-  padding: 0.75rem 1rem;
+.emoji-picker-button {
+  padding: 0.75rem;
   background: #f3f4f6;
-  color: #6b7280;
   border-radius: 0.5rem;
-  font-weight: 600;
+  font-size: 1.25rem;
   transition: all 0.2s;
+  min-width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.text-toggle:hover {
+.emoji-picker-button:hover {
   background: #e5e7eb;
-  color: #4b5563;
+  transform: scale(1.05);
 }
 
-.text-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
-  font-family: inherit;
-  resize: vertical;
+.emoji-picker-container {
+  position: relative;
   margin-bottom: 1rem;
-  outline: none;
-  transition: border-color 0.2s;
+  display: flex;
+  justify-content: center;
 }
 
-.text-input:focus {
-  border-color: #9333ea;
+.emoji-picker-container .EmojiPickerReact {
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .submit-button {
